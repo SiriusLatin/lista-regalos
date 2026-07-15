@@ -211,6 +211,78 @@ document.getElementById('wish-form').addEventListener('submit', async (e) => {
         btn.textContent = 'Enviar mensaje';
     }
 });
+
+const GIFT_NAMES = {
+  "WL-001": "Funda Nórdica Rayas Reversible",
+  "WL-002": "Relleno Nórdico Microfibra 350 G/M²",
+  "WL-003": "Funda Nórdica Lino Lavado 160 G/M²",
+  "WL-004": "Relleno Nórdico Microfibra 350 G/M² (2°)",
+  "WL-005": "Funda Almohada Lino Lavado – Pack x2 (50×95 cm)",
+  "WL-006": "Almohada Microfibra (50×95 cm)",
+  "WL-007": "Funda Cojín Trenzado",
+  "WL-008": "Funda Cojín Trenzado (2°)",
+  "WL-009": "Relleno Cojín Microfibra 30×50 cm",
+  "WL-010": "Relleno Cojín Microfibra 30×50 cm (2°)",
+  "WL-011": "Funda Cojín Flecos 40×60 cm",
+  "WL-012": "Funda Cojín Flecos 40×60 cm (2°)",
+  "WL-013": "Relleno Cojín Microfibra 40×60 cm",
+  "WL-014": "Relleno Cojín Microfibra 40×60 cm (2°)",
+  "WL-015": "Manta Flecos 140×190 cm",
+  "WL-016": "Felpudo Liso Yute 60×90 cm",
+  "WL-017": "Alfombra Algodón Reversible 140×200 cm",
+  "WL-018": "Alfombra Efecto Vintage 200×300 cm",
+  "WL-019": "Marco Foto Estructura Rectangular",
+  "WL-020": "Marco Foto Perfil Metálico Plateado",
+  "WL-021": "Marco Foto Perfil Metálico Plateado (2°)",
+  "WL-022": "Marco Foto Perfil Metálico Plateado (3°)",
+  "WL-023": "Bandeja Decorativa Metal",
+  "WL-024": "Cesta Seagrass Tapa",
+  "WL-025": "Cesta Seagrass Tapa (2°)",
+  "WL-026": "Sujetalibros Mármol Triangular",
+  "WL-027": "Sujetalibros Mármol Triangular (2°)",
+  "WL-028": "Bandeja Irregular Redonda",
+  "WL-029": "Revistero Algodón y Piel",
+  "WL-030": "Portavelas Alabastro 19 cm",
+  "WL-031": "Portavelas Alabastro 15 cm",
+  "WL-032": "Perchero Pie",
+  "WL-033": "Bol Loza Floral (×8 unidades)",
+  "WL-034": "Plato Llano Loza Floral (×8 unidades)",
+  "WL-035": "Plato Postre Loza Floral (×8 unidades)",
+  "WL-036": "Vaso Chupito Tallado Cristalín (×8 unidades)",
+  "WL-037": "Set Cubiertos 4 Piezas Mango Efecto Nacarado",
+  "WL-038": "Set Cubiertos 4 Piezas Mango Efecto Nacarado (2°)",
+  "WL-039": "Tabla Asa Mármol",
+  "WL-040": "Tabla Cortar Madera Irregular",
+  "WL-041": "Pack Paño Cocina Raya (×2)",
+  "WL-042": "Paño Cocina Algodón Rizo Franjas (×2)",
+  "WL-043": "Paño Cocina Algodón Rizo (×2)",
+  "WL-044": "Portarrollo Hierro Madera",
+  "WL-045": "Toalla Baño Pespunte 90×150 cm (×2)",
+  "WL-046": "Toalla Lavabo Pespunte 50×90 cm (×2)",
+  "WL-047": "Alfombra Baño Estructura Acanalada 50×80 cm",
+  "WL-048": "Papelera Baño Metálica Tapa Madera",
+  "WL-049": "Papelera Baño Metálica Tapa Madera (2°)",
+  "WL-050": "Set Accesorios Baño Cerámica Negra (Dispensador + Vaso)"
+};
+
+(function notifyPurchase() {
+    const params = new URLSearchParams(window.location.search);
+    const ref = params.get('external_reference');
+    if (!ref) return;
+    const status = params.get('collection_status') || params.get('status') || 'desconocido';
+    const paymentId = params.get('payment_id') || params.get('collection_id') || '';
+    const name = GIFT_NAMES[ref] || ref;
+
+    fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            _subject: `Pago recibido — ${ref}`,
+            name: 'Notificación automática',
+            message: `Se recibió un pago para: ${name} (${ref})\nEstado: ${status}\nPayment ID: ${paymentId}\n\nMarca este producto como "Regalado" en el sitio.`,
+        }),
+    }).catch(() => {});
+})();
 </script>
 </body>
 </html>
