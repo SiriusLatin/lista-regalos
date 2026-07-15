@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- ════════════════════════════════════════════════
+         PERSONALIZACIÓN — cambia estos 3 datos:
+         1. El título de la pestaña (línea siguiente)
+         2. Los nombres en hero-names (busca [Nombre])
+         3. La fecha y ciudad en hero-date (busca [Día])
+         ════════════════════════════════════════════════ -->
+    <title>Lista de Regalos — Paulina & Ricardo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --cream: #F2EAE1;
+            --cream-card: #FBF7F1;
+            --navy: #22324D;
+            --navy-soft: #3C4B66;
+            --navy-pale: #E7E1DA;
+            --text-dark: #22324D;
+            --text-mid: #50607A;
+            --text-light: #8A93A3;
+            --border: rgba(34,50,77,0.16);
+            --shadow: rgba(34,50,77,0.10);
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            background: var(--cream);
+            color: var(--text-dark);
+        }
+
+        /* ── HERO (estilo invitación) ── */
+        .hero {
+            background: var(--cream);
+            text-align: center;
+            padding: 28px 18px 8px;
+        }
+        .invite {
+            position: relative;
+            max-width: 620px;
+            margin: 0 auto;
+            padding: 64px 40px 56px;
+            color: var(--navy);
+        }
+        /* Marco de finas líneas (pinstripe) */
+        .invite-frame { position: absolute; pointer-events: none; }
+        .frame-top, .frame-bottom {
+            left: 14px; right: 14px; height: 16px;
+            position: absolute;
+            background: repeating-linear-gradient(90deg, var(--navy) 0 1px, transparent 1px 5px);
+            opacity: 0.9;
+        }
+        .frame-top { top: 14px; } .frame-bottom { bottom: 14px; }
+        .frame-left, .frame-right {
+            top: 14px; bottom: 14px; width: 16px;
+            position: absolute;
+            background: repeating-linear-gradient(0deg, var(--navy) 0 1px, transparent 1px 5px);
+            opacity: 0.9;
+        }
+        .frame-left { left: 14px; } .frame-right { right: 14px; }
+
+        .hero-illu { width: 150px; height: auto; margin: 0 auto 26px; display: block; }
+        .hero-illu path, .hero-illu line, .hero-illu circle, .hero-illu ellipse { stroke: var(--navy); }
+
+        .hero-eyebrow {
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--navy-soft);
+            margin-bottom: 26px;
+        }
+        .hero-names {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: clamp(40px, 7vw, 64px);
+            line-height: 1.05;
+            letter-spacing: 0.16em;
+            color: var(--navy);
+        }
+        .hero-names .last {
+            display: block;
+            font-size: 0.24em;
+            letter-spacing: 0.42em;
+            font-weight: 400;
+            color: var(--navy-soft);
+            margin: 8px 0 4px;
+            text-transform: uppercase;
+        }
+        .hero-names .amp {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-weight: 400;
+            font-size: 0.55em;
+            color: var(--navy);
+            margin: 2px 0;
+            display: block;
+            letter-spacing: 0;
+        }
+        .hero-rule {
+            width: 64px; height: 1px;
+            background: var(--navy);
+            opacity: 0.5;
+            margin: 26px auto;
+        }
+        .hero-date {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            letter-spacing: 0.04em;
+            color: var(--navy);
+            margin-bottom: 22px;
+        }
+        .hero-sub {
+            font-size: 13px;
+            font-weight: 300;
+            color: var(--text-mid);
+            max-width: 440px;
+            margin: 0 auto;
+            line-height: 1.95;
+        }
+
+        /* ── STATS ── */
+        .stats-bar {
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+            gap: 56px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .stat { text-align: center; }
+        .stat-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--navy);
+            display: block;
+        }
+        .stat-label {
+            font-size: 10px;
+            font-weight: 400;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--text-light);
+        }
+
+        /* ── FILTERS ── */
+        .filters {
+            padding: 40px 24px 0;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 9px 24px;
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            background: transparent;
+            color: var(--text-mid);
+            font-family: 'Jost', sans-serif;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-btn:hover { border-color: var(--navy); color: var(--navy); }
+        .filter-btn.active { background: var(--navy); border-color: var(--navy); color: var(--cream); }
+
+        /* ── GRID ── */
+        .grid {
+            max-width: 1320px;
+            margin: 32px auto 0;
+            padding: 0 24px 80px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 24px;
+        }
+
+        /* ── CARD ── */
+        .card {
+            background: var(--cream-card);
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.22s, box-shadow 0.22s;
+        }
+        .card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px var(--shadow); }
+        .card.claimed { opacity: 0.5; pointer-events: none; }
+
+        .card-thumb {
+            height: 230px;
+            background: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 14px;
+        }
+        .card-img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .card-icon {
+            position: absolute;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: var(--navy-pale);
+        }
+        .card-icon svg { width: 56px; height: 56px; stroke: var(--navy); opacity: 0.7; }
+        .badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            padding: 3px 11px;
+            border-radius: 100px;
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+        .badge-ok { background: rgba(251,247,241,0.95); color: var(--navy); }
+        .badge-no { background: rgba(34,50,77,0.85); color: rgba(255,255,255,0.92); }
+        .card-ref {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            font-size: 10px;
+            color: var(--text-light);
+            background: rgba(251,247,241,0.85);
+            padding: 2px 8px;
+            border-radius: 100px;
+        }
+
+        .card-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-brand {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--navy-soft);
+            margin-bottom: 8px;
+        }
+        .card-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 20px;
+            font-weight: 500;
+            line-height: 1.3;
+            color: var(--navy);
+            flex: 1;
+            padding-bottom: 16px;
+        }
+        .card-foot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        .card-price {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--navy);
+            line-height: 1;
+        }
+        .card-price span {
+            display: block;
+            font-family: 'Jost', sans-serif;
+            font-size: 10px;
+            font-weight: 300;
+            color: var(--text-light);
+            margin-top: 2px;
+        }
+
+        .btn {
+            padding: 10px 18px;
+            background: var(--navy);
+            color: var(--cream);
+            border: none;
+            border-radius: 4px;
+            font-family: 'Jost', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .btn:hover { background: var(--navy-soft); color: var(--cream); }
+        .btn-off {
+            padding: 10px 18px;
+            background: var(--navy-pale);
+            color: var(--text-light);
+            border-radius: 4px;
+            font-size: 13px;
+            font-family: 'Jost', sans-serif;
+        }
+
+        /* ── INFO BOX ── */
+        .info {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+            text-align: center;
+        }
+        .info h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 32px;
+            font-weight: 400;
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+        .info p {
+            font-size: 14px;
+            color: var(--text-mid);
+            line-height: 1.95;
+        }
+        .info strong { color: var(--navy); font-weight: 500; }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--navy);
+            color: rgba(242,234,225,0.55);
+            text-align: center;
+            padding: 28px 24px;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 600px) {
+            .invite { padding: 48px 22px 40px; }
+            .grid { grid-template-columns: 1fr 1fr; gap: 14px; padding: 0 14px 60px; }
+            .card-name { font-size: 16px; }
+            .stats-bar { gap: 28px; }
+        }
+        @media (max-width: 400px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="hero">
+    <div class="invite">
+        <div class="invite-frame frame-top"></div>
+        <div class="invite-frame frame-bottom"></div>
+        <div class="invite-frame frame-left"></div>
+        <div class="invite-frame frame-right"></div>
+
+        <!-- Ilustración botánica (estilo grabado, como la invitación) -->
+        <svg class="hero-illu" viewBox="0 0 140 120" fill="none" stroke-width="1.1" stroke-linecap="round">
+            <!-- jarrón -->
+            <path d="M58 92 q12 14 24 0" />
+            <path d="M56 86 q14 6 28 0" />
+            <path d="M58 92 l-2 -10 M82 92 l2 -10" />
+            <!-- tallos -->
+            <path d="M70 82 V40 M70 78 q-12 -8 -18 -22 M70 74 q12 -8 18 -24 M70 70 q-8 -6 -10 -20 M70 66 q8 -6 12 -18" />
+            <!-- flor central -->
+            <circle cx="70" cy="34" r="5" />
+            <path d="M70 24 q5 5 0 10 q-5 -5 0 -10 M80 34 q-5 5 -10 0 q5 -5 10 0 M70 44 q-5 -5 0 -10 q5 5 0 10 M60 34 q5 -5 10 0 q-5 5 -10 0" />
+            <!-- flores laterales -->
+            <circle cx="50" cy="20" r="3.5" />
+            <path d="M50 13 q3.5 3.5 0 7 q-3.5 -3.5 0 -7 M57 20 q-3.5 3.5 -7 0 q3.5 -3.5 7 0 M50 27 q-3.5 -3.5 0 -7 M43 20 q3.5 -3.5 7 0" />
+            <circle cx="90" cy="18" r="3.5" />
+            <path d="M90 11 q3.5 3.5 0 7 q-3.5 -3.5 0 -7 M97 18 q-3.5 3.5 -7 0 q3.5 -3.5 7 0 M90 25 q-3.5 -3.5 0 -7 M83 18 q3.5 -3.5 7 0" />
+            <!-- hojas -->
+            <path d="M60 56 q-10 -2 -16 -10 M80 52 q10 -2 16 -10 M62 66 q-9 0 -14 -6 M78 64 q9 0 14 -6" />
+        </svg>
+
+        <p class="hero-eyebrow">Lista de Regalos</p>
+
+        <h1 class="hero-names">
+            PAULINA
+            <span class="last">Restrepo Conde</span>
+            <span class="amp">&amp;</span>
+            RICARDO
+            <span class="last">Bojanini Wiesner</span>
+        </h1>
+
+        <div class="hero-rule"></div>
+
+        <p class="hero-date">29 de Agosto del 2026</p>
+
+        <p class="hero-sub">Si quieres acompañar esta nueva etapa con algo especial, aquí encuentras lo que más nos ilusiona para nuestro hogar.</p>
+    </div>
+</header>
+
+<div class="stats-bar">
+    <div class="stat">
+        <span class="stat-value">50</span>
+        <span class="stat-label">Items en lista</span>
+    </div>
+    <div class="stat">
+        <span class="stat-value" id="stat-disp">50</span>
+        <span class="stat-label">Disponibles</span>
+    </div>
+</div>
+
+<div class="filters">
+    <button class="filter-btn active" onclick="filter('all',this)">Todos (50)</button>
+    <button class="filter-btn" onclick="filter('dormitorio',this)">Dormitorio (15)</button>
+    <button class="filter-btn" onclick="filter('decoracion',this)">Decoración (17)</button>
+    <button class="filter-btn" onclick="filter('cocina',this)">Cocina (12)</button>
+    <button class="filter-btn" onclick="filter('bano',this)">Baño (6)</button>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<footer>Paulina &amp; Ricardo · 29 de Agosto del 2026</footer>
+
+<script>
+/* ══════════════════════════════════════════════════════════
+   INSTRUCCIONES PARA AGREGAR LOS LINKS DE PAGO:
+
+   1. Crea cuenta gratis en mercadopago.com.co
+   2. Ve a Tu negocio → Cobros → Link de pago
+   3. Crea un link por cada item: pon el precio exacto y el
+      nombre del producto como descripción
+   4. Copia cada link y reemplaza el "#" correspondiente
+      en el array de abajo (campo "link")
+
+   Ejemplo:
+   link: 'https://mpago.la/xxxxxxx'
+   ══════════════════════════════════════════════════════════ */
+
+const gifts = [
+  // ── DORMITORIO ──────────────────────────────────────────
+  { id:'WL-001', cat:'dormitorio', brand:'Zara Home', name:'Funda Nórdica Rayas Reversible',                     price:349000,  link:'#', claimed:false },
+  { id:'WL-002', cat:'dormitorio', brand:'Zara Home', name:'Relleno Nórdico Microfibra 350 GXM²',                price:429000,  link:'#', claimed:false },
+  { id:'WL-003', cat:'dormitorio', brand:'Zara Home', name:'Funda Nórdica Lino Lavado 160 GXM²',                 price:839000,  link:'#', claimed:false },
+  { id:'WL-004', cat:'dormitorio', brand:'Zara Home', name:'Relleno Nórdico Microfibra 350 GXM² (2°)',           price:429000,  link:'#', claimed:false },
+  { id:'WL-005', cat:'dormitorio', brand:'Zara Home', name:'Funda Almohada Lino Lavado – Pack x2 (50×95 cm)',    price:279000,  link:'#', claimed:false },
+  { id:'WL-006', cat:'dormitorio', brand:'Zara Home', name:'Almohada Microfibra (50×95 cm)',                     price:139000,  link:'#', claimed:false },
+  { id:'WL-007', cat:'dormitorio', brand:'Zara Home', name:'Funda Cojín Trenzado',                               price:209000,  link:'#', claimed:false },
+  { id:'WL-008', cat:'dormitorio', brand:'Zara Home', name:'Funda Cojín Trenzado (2°)',                          price:209000,  link:'#', claimed:false },
+  { id:'WL-009', cat:'dormitorio', brand:'Zara Home', name:'Relleno Cojín Microfibra 30×50 cm',                  price:43900,   link:'#', claimed:false },
+  { id:'WL-010', cat:'dormitorio', brand:'Zara Home', name:'Relleno Cojín Microfibra 30×50 cm (2°)',             price:43900,   link:'#', claimed:false },
+  { id:'WL-011', cat:'dormitorio', brand:'Zara Home', name:'Funda Cojín Flecos 40×60 cm',                        price:209000,  link:'#', claimed:false },
+  { id:'WL-012', cat:'dormitorio', brand:'Zara Home', name:'Funda Cojín Flecos 40×60 cm (2°)',                   price:209000,  link:'#', claimed:false },
+  { id:'WL-013', cat:'dormitorio', brand:'Zara Home', name:'Relleno Cojín Microfibra 40×60 cm',                  price:58900,   link:'#', claimed:false },
+  { id:'WL-014', cat:'dormitorio', brand:'Zara Home', name:'Relleno Cojín Microfibra 40×60 cm (2°)',             price:58900,   link:'#', claimed:false },
+  { id:'WL-015', cat:'dormitorio', brand:'Zara Home', name:'Manta Flecos 140×190 cm',                            price:279000,  link:'#', claimed:false },
+  // ── DECORACIÓN ──────────────────────────────────────────
+  { id:'WL-016', cat:'decoracion', brand:'Zara Home', name:'Felpudo Liso Yute 60×90 cm',                         price:209000,  link:'#', claimed:false },
+  { id:'WL-017', cat:'decoracion', brand:'Zara Home', name:'Alfombra Algodón Reversible 140×200 cm',             price:839000,  link:'#', claimed:false },
+  { id:'WL-018', cat:'decoracion', brand:'Zara Home', name:'Alfombra Efecto Vintage 200×300 cm',                 price:1405000, link:'#', claimed:false },
+  { id:'WL-019', cat:'decoracion', brand:'Zara Home', name:'Marco Foto Estructura Rectangular',                  price:139000,  link:'#', claimed:false },
+  { id:'WL-020', cat:'decoracion', brand:'Zara Home', name:'Marco Foto Perfil Metálico Plateado',                price:179000,  link:'#', claimed:false },
+  { id:'WL-021', cat:'decoracion', brand:'Zara Home', name:'Marco Foto Perfil Metálico Plateado (2°)',           price:179000,  link:'#', claimed:false },
+  { id:'WL-022', cat:'decoracion', brand:'Zara Home', name:'Marco Foto Perfil Metálico Plateado (3°)',           price:179000,  link:'#', claimed:false },
+  { id:'WL-023', cat:'decoracion', brand:'Zara Home', name:'Bandeja Decorativa Metal',                           price:279000,  link:'#', claimed:false },
+  { id:'WL-024', cat:'decoracion', brand:'Zara Home', name:'Cesta Seagrass Tapa',                                price:299000,  link:'#', claimed:false },
+  { id:'WL-025', cat:'decoracion', brand:'Zara Home', name:'Cesta Seagrass Tapa (2°)',                           price:299000,  link:'#', claimed:false },
+  { id:'WL-026', cat:'decoracion', brand:'Zara Home', name:'Sujetalibros Mármol Triangular',                     price:169000,  link:'#', claimed:false },
+  { id:'WL-027', cat:'decoracion', brand:'Zara Home', name:'Sujetalibros Mármol Triangular (2°)',                price:169000,  link:'#', claimed:false },
+  { id:'WL-028', cat:'decoracion', brand:'Zara Home', name:'Bandeja Irregular Redonda',                          price:209000,  link:'#', claimed:false },
+  { id:'WL-029', cat:'decoracion', brand:'Zara Home', name:'Revistero Algodón y Piel',                           price:639000,  link:'#', claimed:false },
+  { id:'WL-030', cat:'decoracion', brand:'Zara Home', name:'Portavelas Alabastro 19 cm',                         price:489000,  link:'#', claimed:false },
+  { id:'WL-031', cat:'decoracion', brand:'Zara Home', name:'Portavelas Alabastro 15 cm',                         price:279000,  link:'#', claimed:false },
+  { id:'WL-032', cat:'decoracion', brand:'Zara Home', name:'Perchero Pie',                                       price:699000,  link:'#', claimed:false },
+  // ── COCINA ──────────────────────────────────────────────
+  { id:'WL-033', cat:'cocina',     brand:'Zara Home', name:'Bol Loza Floral (×8 unidades)',                      price:351200,  link:'#', claimed:false },
+  { id:'WL-034', cat:'cocina',     brand:'Zara Home', name:'Plato Llano Loza Floral (×8 unidades)',              price:407200,  link:'#', claimed:false },
+  { id:'WL-035', cat:'cocina',     brand:'Zara Home', name:'Plato Postre Loza Floral (×8 unidades)',             price:351200,  link:'#', claimed:false },
+  { id:'WL-036', cat:'cocina',     brand:'Zara Home', name:'Vaso Chupito Tallado Cristalín (×8 unidades)',       price:231200,  link:'#', claimed:false },
+  { id:'WL-037', cat:'cocina',     brand:'Zara Home', name:'Set Cubiertos 4 Piezas Mango Efecto Nacarado',       price:476000,  link:'#', claimed:false },
+  { id:'WL-038', cat:'cocina',     brand:'Zara Home', name:'Set Cubiertos 4 Piezas Mango Efecto Nacarado (2°)',  price:476000,  link:'#', claimed:false },
+  { id:'WL-039', cat:'cocina',     brand:'Zara Home', name:'Tabla Asa Mármol',                                   price:279000,  link:'#', claimed:false },
+  { id:'WL-040', cat:'cocina',     brand:'Zara Home', name:'Tabla Cortar Madera Irregular',                      price:179000,  link:'#', claimed:false },
+  { id:'WL-041', cat:'cocina',     brand:'Zara Home', name:'Pack Paño Cocina Raya (×2)',                         price:70900,   link:'#', claimed:false },
+  { id:'WL-042', cat:'cocina',     brand:'Zara Home', name:'Paño Cocina Algodón Rizo Franjas (×2)',              price:87800,   link:'#', claimed:false },
+  { id:'WL-043', cat:'cocina',     brand:'Zara Home', name:'Paño Cocina Algodón Rizo (×2)',                      price:87800,   link:'#', claimed:false },
+  { id:'WL-044', cat:'cocina',     brand:'Zara Home', name:'Portarrollo Hierro Madera',                          price:95900,   link:'#', claimed:false },
+  // ── BAÑO ────────────────────────────────────────────────
+  { id:'WL-045', cat:'bano',       brand:'Zara Home', name:'Toalla Baño Pespunte 90×150 cm (×2)',                price:358000,  link:'#', claimed:false },
+  { id:'WL-046', cat:'bano',       brand:'Zara Home', name:'Toalla Lavabo Pespunte 50×90 cm (×2)',               price:141800,  link:'#', claimed:false },
+  { id:'WL-047', cat:'bano',       brand:'Zara Home', name:'Alfombra Baño Estructura Acanalada 50×80 cm',        price:139000,  link:'#', claimed:false },
+  { id:'WL-048', cat:'bano',       brand:'Zara Home', name:'Papelera Baño Metálica Tapa Madera',                 price:249000,  link:'#', claimed:false },
+  { id:'WL-049', cat:'bano',       brand:'Zara Home', name:'Papelera Baño Metálica Tapa Madera (2°)',            price:249000,  link:'#', claimed:false },
+  { id:'WL-050', cat:'bano',       brand:'Zara Home', name:'Set Accesorios Baño Cerámica Negra (Dispensador + Vaso)', price:187900, link:'#', claimed:false },
+];
+
+const svgWrap = p => `<svg viewBox="0 0 24 24" fill="none" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const icons = {
+    dormitorio: svgWrap('<path d="M3 18v-5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v5"/><path d="M3 18v2M21 18v2"/><path d="M6 11V8a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v3M13 11V8a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v3"/>'),
+    decoracion: svgWrap('<path d="M9 10h6l-1 9H10z"/><path d="M9 10c0-3 6-3 6 0"/><path d="M12 10V5"/><circle cx="12" cy="4" r="1.4"/><path d="M12 7c-2 0-3-1.5-3-3M12 7c2 0 3-1.5 3-3"/>'),
+    cocina: svgWrap('<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.4"/>'),
+    bano: svgWrap('<path d="M12 3c3 4 5 6.5 5 9a5 5 0 0 1-10 0c0-2.5 2-5 5-9z"/>')
+};
+const labels = { dormitorio:'Dormitorio', decoracion:'Decoración', cocina:'Cocina', bano:'Baño' };
+
+function fmt(n) {
+    return '$ ' + n.toLocaleString('es-CO');
+}
+
+// Busca la imagen probando varias extensiones (.jpg, .png, etc.).
+// Si ninguna existe, muestra el ícono de línea.
+const IMG_EXT = ['jpg','png','jpeg','webp','PNG','JPG'];
+function imgFallback(img, id) {
+    const i = (+img.dataset.i || 0) + 1;
+    if (i < IMG_EXT.length) {
+        img.dataset.i = i;
+        img.src = 'imagenes/' + id + '.' + IMG_EXT[i];
+    } else {
+        img.style.display = 'none';
+        img.nextElementSibling.style.display = 'flex';
+    }
+}
+
+let currentFilter = 'all';
+
+function render() {
+    const list = currentFilter === 'all' ? gifts : gifts.filter(g => g.cat === currentFilter);
+    document.getElementById('grid').innerHTML = list.map(g => `
+        <div class="card${g.claimed ? ' claimed' : ''}">
+            <div class="card-thumb">
+                <img class="card-img" src="imagenes/${g.id}.jpg" alt="${g.name}" loading="lazy"
+                     data-i="0" onerror="imgFallback(this,'${g.id}')">
+                <div class="card-icon">${icons[g.cat]}</div>
+                <span class="badge ${g.claimed ? 'badge-no' : 'badge-ok'}">${g.claimed ? 'Regalado' : 'Disponible'}</span>
+                <span class="card-ref">${g.id}</span>
+            </div>
+            <div class="card-body">
+                <p class="card-brand">${g.brand} &nbsp;·&nbsp; ${labels[g.cat]}</p>
+                <h3 class="card-name">${g.name}</h3>
+                <div class="card-foot">
+                    <div class="card-price">
+                        ${fmt(g.price)}
+                        <span>COP</span>
+                    </div>
+                    ${g.claimed
+                        ? `<span class="btn-off">Regalado</span>`
+                        : g.link === '#'
+                            ? `<span class="btn-off" title="Link de pago pendiente">Próximamente</span>`
+                            : `<a class="btn" href="${g.link}" target="_blank" rel="noopener noreferrer">Regalar →</a>`
+                    }
+                </div>
+            </div>
+        </div>
+    `).join('');
+    document.getElementById('stat-disp').textContent = gifts.filter(g => !g.claimed).length;
+}
+
+function filter(cat, btn) {
+    currentFilter = cat;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render();
+}
+
+render();
+</script>
+</body>
+</html>
