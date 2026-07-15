@@ -47,22 +47,14 @@
             padding: 64px 40px 56px;
             color: var(--navy);
         }
-        /* Marco de finas líneas (pinstripe) */
-        .invite-frame { position: absolute; pointer-events: none; }
-        .frame-top, .frame-bottom {
-            left: 14px; right: 14px; height: 16px;
+        /* Marco de doble filete (estilo invitación grabada) */
+        .invite-frame {
             position: absolute;
-            background: repeating-linear-gradient(90deg, var(--navy) 0 1px, transparent 1px 5px);
-            opacity: 0.9;
+            pointer-events: none;
+            border: 1px solid var(--navy);
         }
-        .frame-top { top: 14px; } .frame-bottom { bottom: 14px; }
-        .frame-left, .frame-right {
-            top: 14px; bottom: 14px; width: 16px;
-            position: absolute;
-            background: repeating-linear-gradient(0deg, var(--navy) 0 1px, transparent 1px 5px);
-            opacity: 0.9;
-        }
-        .frame-left { left: 14px; } .frame-right { right: 14px; }
+        .frame-outer { top: 14px; left: 14px; right: 14px; bottom: 14px; opacity: 0.55; }
+        .frame-inner { top: 19px; left: 19px; right: 19px; bottom: 19px; opacity: 0.3; }
 
         .hero-illu { width: 150px; height: auto; margin: 0 auto 26px; display: block; }
         .hero-illu path, .hero-illu line, .hero-illu circle, .hero-illu ellipse { stroke: var(--navy); }
@@ -474,29 +466,49 @@
 
 <header class="hero">
     <div class="invite">
-        <div class="invite-frame frame-top"></div>
-        <div class="invite-frame frame-bottom"></div>
-        <div class="invite-frame frame-left"></div>
-        <div class="invite-frame frame-right"></div>
+        <div class="invite-frame frame-outer"></div>
+        <div class="invite-frame frame-inner"></div>
 
-        <!-- Ilustración botánica (estilo grabado, como la invitación) -->
-        <svg class="hero-illu" viewBox="0 0 140 120" fill="none" stroke-width="1.1" stroke-linecap="round">
-            <!-- jarrón -->
-            <path d="M58 92 q12 14 24 0" />
-            <path d="M56 86 q14 6 28 0" />
-            <path d="M58 92 l-2 -10 M82 92 l2 -10" />
-            <!-- tallos -->
-            <path d="M70 82 V40 M70 78 q-12 -8 -18 -22 M70 74 q12 -8 18 -24 M70 70 q-8 -6 -10 -20 M70 66 q8 -6 12 -18" />
+        <!-- Ilustración botánica (estilo grabado, simétrica) -->
+        <svg class="hero-illu" viewBox="0 0 140 120" fill="none" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <!-- urna -->
+            <path d="M60 96 Q60 87 65 85 L65 80 Q70 78 75 80 L75 85 Q80 87 80 96 Q80 99 70 99 Q60 99 60 96 Z" />
+            <!-- tallo central -->
+            <path d="M70 80 V40" />
             <!-- flor central -->
-            <circle cx="70" cy="34" r="5" />
-            <path d="M70 24 q5 5 0 10 q-5 -5 0 -10 M80 34 q-5 5 -10 0 q5 -5 10 0 M70 44 q-5 -5 0 -10 q5 5 0 10 M60 34 q5 -5 10 0 q-5 5 -10 0" />
+            <g>
+                <ellipse cx="70" cy="30" rx="4.5" ry="8" />
+                <ellipse cx="70" cy="30" rx="4.5" ry="8" transform="rotate(72 70 30)" />
+                <ellipse cx="70" cy="30" rx="4.5" ry="8" transform="rotate(144 70 30)" />
+                <ellipse cx="70" cy="30" rx="4.5" ry="8" transform="rotate(216 70 30)" />
+                <ellipse cx="70" cy="30" rx="4.5" ry="8" transform="rotate(288 70 30)" />
+                <circle cx="70" cy="30" r="2.4" />
+            </g>
+            <!-- tallos laterales -->
+            <path d="M70 64 Q57 60 51 48" />
+            <path d="M70 64 Q83 60 89 48" />
             <!-- flores laterales -->
-            <circle cx="50" cy="20" r="3.5" />
-            <path d="M50 13 q3.5 3.5 0 7 q-3.5 -3.5 0 -7 M57 20 q-3.5 3.5 -7 0 q3.5 -3.5 7 0 M50 27 q-3.5 -3.5 0 -7 M43 20 q3.5 -3.5 7 0" />
-            <circle cx="90" cy="18" r="3.5" />
-            <path d="M90 11 q3.5 3.5 0 7 q-3.5 -3.5 0 -7 M97 18 q-3.5 3.5 -7 0 q3.5 -3.5 7 0 M90 25 q-3.5 -3.5 0 -7 M83 18 q3.5 -3.5 7 0" />
+            <g>
+                <ellipse cx="49" cy="42" rx="3" ry="5.5" />
+                <ellipse cx="49" cy="42" rx="3" ry="5.5" transform="rotate(72 49 42)" />
+                <ellipse cx="49" cy="42" rx="3" ry="5.5" transform="rotate(144 49 42)" />
+                <ellipse cx="49" cy="42" rx="3" ry="5.5" transform="rotate(216 49 42)" />
+                <ellipse cx="49" cy="42" rx="3" ry="5.5" transform="rotate(288 49 42)" />
+                <circle cx="49" cy="42" r="1.7" />
+            </g>
+            <g>
+                <ellipse cx="91" cy="42" rx="3" ry="5.5" />
+                <ellipse cx="91" cy="42" rx="3" ry="5.5" transform="rotate(72 91 42)" />
+                <ellipse cx="91" cy="42" rx="3" ry="5.5" transform="rotate(144 91 42)" />
+                <ellipse cx="91" cy="42" rx="3" ry="5.5" transform="rotate(216 91 42)" />
+                <ellipse cx="91" cy="42" rx="3" ry="5.5" transform="rotate(288 91 42)" />
+                <circle cx="91" cy="42" r="1.7" />
+            </g>
             <!-- hojas -->
-            <path d="M60 56 q-10 -2 -16 -10 M80 52 q10 -2 16 -10 M62 66 q-9 0 -14 -6 M78 64 q9 0 14 -6" />
+            <path d="M64 68 Q52 66 46 58" />
+            <path d="M76 68 Q88 66 94 58" />
+            <path d="M67 76 Q57 75 52 69" />
+            <path d="M73 76 Q83 75 88 69" />
         </svg>
 
         <p class="hero-eyebrow">Lista de Regalos</p>
@@ -513,7 +525,7 @@
 
         <p class="hero-date">29 de Agosto del 2026</p>
 
-        <p class="hero-sub">Si quieres acompañar esta nueva etapa con algo especial, aquí encuentras lo que más nos ilusiona para nuestro hogar.</p>
+        <p class="hero-sub">Selección de artículos para nuestro nuevo hogar.</p>
     </div>
 </header>
 
