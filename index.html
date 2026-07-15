@@ -343,6 +343,108 @@
             letter-spacing: 1px;
         }
 
+        /* ── CASH BOX ── */
+        .cash-wrap {
+            max-width: 640px;
+            margin: 8px auto 0;
+            padding: 0 24px 60px;
+        }
+        .cash-card {
+            background: var(--cream-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 40px 36px;
+            text-align: center;
+        }
+        .cash-eyebrow {
+            font-size: 10px;
+            font-weight: 500;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--navy-soft);
+            margin-bottom: 14px;
+        }
+        .cash-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 500;
+            font-size: 28px;
+            color: var(--navy);
+            margin-bottom: 14px;
+        }
+        .cash-sub {
+            font-size: 14px;
+            color: var(--text-mid);
+            line-height: 1.9;
+            max-width: 440px;
+            margin: 0 auto 28px;
+        }
+        .cash-box {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 20px 24px;
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .cash-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        .cash-row:last-child { border-bottom: none; }
+        .cash-label {
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+        .cash-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--navy);
+            text-align: right;
+        }
+        .cash-account {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .cash-copy {
+            font-family: 'Jost', sans-serif;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            color: var(--cream);
+            background: var(--navy);
+            border: none;
+            border-radius: 100px;
+            padding: 5px 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+        .cash-copy:hover { background: var(--navy-soft); }
+        .cash-joke {
+            font-size: 12px;
+            color: var(--text-light);
+            font-style: italic;
+            margin-top: 24px;
+        }
+        @media (max-width: 640px) {
+            .cash-wrap { padding: 0 16px 50px; }
+            .cash-card { padding: 32px 22px; }
+            .cash-card h3 { font-size: 23px; }
+            .cash-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+            .cash-value { text-align: left; }
+            .cash-account { width: 100%; justify-content: space-between; }
+        }
+
         .hidden { display: none !important; }
 
         @media (max-width: 640px) {
@@ -441,6 +543,29 @@
 </div>
 
 <div class="grid" id="grid"></div>
+
+<div class="cash-wrap">
+    <div class="cash-card">
+        <p class="cash-eyebrow">También aceptamos cariño en efectivo</p>
+        <h3>¿Prefieres darnos una mano líquida?</h3>
+        <p class="cash-sub">Si te provoca más consignar el monto que quieras (sin presión, tú decides cuánto), esta es la cuenta:</p>
+
+        <div class="cash-box">
+            <div class="cash-row"><span class="cash-label">Banco</span><span class="cash-value">Bancolombia</span></div>
+            <div class="cash-row"><span class="cash-label">Tipo de cuenta</span><span class="cash-value">Ahorros</span></div>
+            <div class="cash-row">
+                <span class="cash-label">N.º de cuenta</span>
+                <span class="cash-value cash-account">
+                    <span id="cash-number">00561627720</span>
+                    <button class="cash-copy" onclick="copyCash()" id="cash-copy-btn">Copiar</button>
+                </span>
+            </div>
+            <div class="cash-row"><span class="cash-label">Titular</span><span class="cash-value">Paulina Restrepo Conde</span></div>
+        </div>
+
+        <p class="cash-joke">(Y si eres más de Bitcoin que de banco tradicional... con gusto aceptamos también las felicitaciones en cadena de bloques 😉)</p>
+    </div>
+</div>
 
 <footer>Paulina &amp; Ricardo · 29 de Agosto del 2026</footer>
 
@@ -582,6 +707,15 @@ function filter(cat, btn) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     render();
+}
+
+function copyCash() {
+    const number = document.getElementById('cash-number').textContent;
+    const btn = document.getElementById('cash-copy-btn');
+    navigator.clipboard.writeText(number).then(() => {
+        btn.textContent = 'Copiado ✓';
+        setTimeout(() => { btn.textContent = 'Copiar'; }, 1800);
+    });
 }
 
 render();
